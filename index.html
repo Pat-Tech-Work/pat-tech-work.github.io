@@ -187,28 +187,6 @@
       const questionDiv = document.getElementById('question');
       questionDiv.innerHTML = '';
 
-      const idNode = document.createElement('div');
-      idNode.className = 'pubdate';
-      idNode.textContent = `שאלה מספר: ${current.id}`;
-      questionDiv.appendChild(idNode);
-
-      if (current.pubDate) {
-        const date = document.createElement('div');
-        date.className = 'pubdate';
-        date.textContent = `תאריך פרסום: ${current.pubDate}`;
-        questionDiv.appendChild(date);
-      }
-
-      const licenseNode = document.createElement('div');
-      licenseNode.className = 'pubdate';
-      licenseNode.textContent = `סוגי רישיון: ${current.license_types.join(', ')}`;
-      questionDiv.appendChild(licenseNode);
-
-      const categoryNode = document.createElement('div');
-      categoryNode.className = 'pubdate';
-      categoryNode.textContent = `נושא: ${current.category}`;
-      questionDiv.appendChild(categoryNode);
-
       const textNode = document.createElement('div');
       textNode.style.direction = 'rtl';
       textNode.textContent = current.question;
@@ -240,6 +218,34 @@
         btn.onclick = () => checkAnswer(btn, isCorrect);
         answersDiv.appendChild(btn);
       });
+
+      const infoDiv = document.createElement('div');
+      infoDiv.style.marginTop = '1rem';
+
+      const idNode = document.createElement('div');
+      idNode.className = 'pubdate';
+      idNode.textContent = `שאלה מספר: ${current.id}`;
+      infoDiv.appendChild(idNode);
+
+      if (current.pubDate) {
+        const date = document.createElement('div');
+        date.className = 'pubdate';
+        date.textContent = `תאריך פרסום: ${current.pubDate}`;
+        infoDiv.appendChild(date);
+      }
+
+      const licenseNode = document.createElement('div');
+      licenseNode.className = 'pubdate';
+      licenseNode.textContent = `סוגי רישיון: ${current.license_types.join(', ')}`;
+      infoDiv.appendChild(licenseNode);
+
+      const categoryNode = document.createElement('div');
+      categoryNode.className = 'pubdate';
+      categoryNode.textContent = `נושא: ${current.category}`;
+      infoDiv.appendChild(categoryNode);
+
+      const cardDiv = document.querySelector('.card');
+      cardDiv.appendChild(infoDiv);
     }
 
     function checkAnswer(button, isCorrect) {
