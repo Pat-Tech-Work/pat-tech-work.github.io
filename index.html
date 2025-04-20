@@ -144,6 +144,11 @@
       const questionDiv = document.getElementById('question');
       questionDiv.innerHTML = '';
 
+      const idNode = document.createElement('div');
+      idNode.textContent = `שאלה מספר: ${current.id}`;
+      idNode.style.fontWeight = 'bold';
+      questionDiv.appendChild(idNode);
+
       const textNode = document.createElement('div');
       textNode.textContent = current.question;
       questionDiv.appendChild(textNode);
