@@ -188,20 +188,9 @@
       questionDiv.innerHTML = '';
 
       const idNode = document.createElement('div');
+      idNode.className = 'pubdate';
       idNode.textContent = `שאלה מספר: ${current.id}`;
-      idNode.style.fontWeight = 'bold';
       questionDiv.appendChild(idNode);
-
-      const textNode = document.createElement('div');
-      textNode.textContent = current.question;
-      questionDiv.appendChild(textNode);
-
-      if (current.image) {
-        const img = document.createElement('img');
-        img.src = current.image;
-        img.alt = 'שאלה עם תמונה';
-        questionDiv.appendChild(img);
-      }
 
       if (current.pubDate) {
         const date = document.createElement('div');
@@ -219,6 +208,18 @@
       categoryNode.className = 'pubdate';
       categoryNode.textContent = `נושא: ${current.category}`;
       questionDiv.appendChild(categoryNode);
+
+      const textNode = document.createElement('div');
+      textNode.style.direction = 'rtl';
+      textNode.textContent = current.question;
+      questionDiv.appendChild(textNode);
+
+      if (current.image) {
+        const img = document.createElement('img');
+        img.src = current.image;
+        img.alt = 'שאלה עם תמונה';
+        questionDiv.appendChild(img);
+      }
 
       const answersDiv = document.getElementById('answers');
       answersDiv.innerHTML = '';
