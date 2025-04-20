@@ -88,6 +88,11 @@
       <option value="all">כל הנושאים</option>
     </select>
   </div>
+  <div class="filter">
+    <select id="licenseFilter">
+      <option value="all">כל סוגי הרישיונות</option>
+    </select>
+  </div>
   <div class="card">
     <div class="question" id="question">טוען שאלה...</div>
     <div class="answers" id="answers"></div>
@@ -109,6 +114,7 @@
         console.log('Questions loaded:', questions);
         filteredQuestions = questions;
         populateCategories();
+        populateLicenseTypes();
         filterByCategory();
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -132,10 +138,35 @@
       });
     }
 
+    function populateLicenseTypes() {
+      const licenseCounts = questions.reduce((acc, q) => {
+        q.license_types.forEach(type => {
+          acc[type] = (acc[type] || 0) + 1;
+        });
+        return acc;
+      }, {});
+
+      const licenses = Object.keys(licenseCounts).sort();
+      const select = document.getElementById('licenseFilter');
+      select.innerHTML = '<option value="all">כל סוגי הרישיונות</option>'; // Reset options
+      licenses.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = `${type} (${licenseCounts[type]})`;
+        select.appendChild(option);
+      });
+    }
+
     function filterByCategory() {
       const selected = document.getElementById('categoryFilter').value;
       filteredQuestions = selected === 'all' ? questions : questions.filter(q => q.category === selected);
       showRandomQuestion();
+    }
+
+    function filterByLicense() {
+      const selectedLicense = document.getElementById('licenseFilter').value;
+      filteredQuestions = selectedLicense === 'all' ? questions : questions.filter(q => q.license_types.includes(selectedLicense));
+      filterByCategory(); // Apply category filter as well
     }
 
     function showRandomQuestion() {
@@ -215,6 +246,7 @@
     });
 
     document.getElementById('categoryFilter').addEventListener('change', filterByCategory);
+    document.getElementById('licenseFilter').addEventListener('change', filterByLicense);
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -224,6 +256,7 @@
       return array;
     }
 
+    populateLicenseTypes();
     loadQuestions();
   </script>
 </body>
