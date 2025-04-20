@@ -192,6 +192,10 @@
       idNode.style.fontWeight = 'bold';
       questionDiv.appendChild(idNode);
 
+      const categoryNode = document.createElement('div');
+      categoryNode.textContent = `נושא: ${current.category}`;
+      questionDiv.appendChild(categoryNode);
+
       const textNode = document.createElement('div');
       textNode.textContent = current.question;
       questionDiv.appendChild(textNode);
