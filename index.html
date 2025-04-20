@@ -219,33 +219,41 @@
         answersDiv.appendChild(btn);
       });
 
-      const infoDiv = document.createElement('div');
-      infoDiv.style.marginTop = '1rem';
+      // נקה את המידע הקודם
+      const infoDiv = document.getElementById('info');
+      if (infoDiv) {
+        infoDiv.remove();
+      }
+
+      // צור אלמנט חדש למידע
+      const newInfoDiv = document.createElement('div');
+      newInfoDiv.id = 'info';
+      newInfoDiv.style.marginTop = '1rem';
 
       const idNode = document.createElement('div');
       idNode.className = 'pubdate';
       idNode.textContent = `שאלה מספר: ${current.id}`;
-      infoDiv.appendChild(idNode);
+      newInfoDiv.appendChild(idNode);
 
       if (current.pubDate) {
         const date = document.createElement('div');
         date.className = 'pubdate';
         date.textContent = `תאריך פרסום: ${current.pubDate}`;
-        infoDiv.appendChild(date);
+        newInfoDiv.appendChild(date);
       }
 
       const licenseNode = document.createElement('div');
       licenseNode.className = 'pubdate';
       licenseNode.textContent = `סוגי רישיון: ${current.license_types.join(', ')}`;
-      infoDiv.appendChild(licenseNode);
+      newInfoDiv.appendChild(licenseNode);
 
       const categoryNode = document.createElement('div');
       categoryNode.className = 'pubdate';
       categoryNode.textContent = `נושא: ${current.category}`;
-      infoDiv.appendChild(categoryNode);
+      newInfoDiv.appendChild(categoryNode);
 
       const cardDiv = document.querySelector('.card');
-      cardDiv.appendChild(infoDiv);
+      cardDiv.appendChild(newInfoDiv);
     }
 
     function checkAnswer(button, isCorrect) {
