@@ -106,6 +106,7 @@
           throw new Error('Network response was not ok');
         }
         questions = await response.json();
+        console.log('Questions loaded:', questions);
         filteredQuestions = questions;
         populateCategories();
         filterByCategory();
@@ -133,7 +134,10 @@
     }
 
     function showRandomQuestion() {
-      if (filteredQuestions.length === 0) return;
+      if (filteredQuestions.length === 0) {
+        console.log('No questions available');
+        return;
+      }
       const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
       current = filteredQuestions[randomIndex];
 
@@ -165,6 +169,8 @@
         text: answer,
         isCorrect: index === current.correct
       }));
+
+      console.log('Answers:', answerObjects);
 
       shuffleArray(answerObjects).forEach(({ text, isCorrect }) => {
         const btn = document.createElement('button');
