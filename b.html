@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגול תאוריה</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 2rem;
+      text-align: right;
+    }
+    .card {
+      background: white;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .question img {
+      width: 100%;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+    }
+    .pubdate {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background-color: #f9f9f9;
+      transition: background-color 0.3s;
+    }
+    .answers button:hover {
+      background-color: #e0e0e0;
+    }
+    .answers button.correct {
+      background-color: #c8e6c9;
+      border-color: #388e3c;
+      color: #2e7d32;
+    }
+    .answers button.wrong {
+      background-color: #ffcdd2;
+      border-color: #c62828;
+      color: #b71c1c;
+    }
+    .next-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .filter {
+      max-width: 600px;
+      margin: auto;
+      margin-bottom: 1rem;
+    }
+    .filter select {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="filter">
+    <select id="categoryFilter">
+      <option value="all">כל הנושאים</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="question" id="question">טוען שאלה...</div>
+    <div class="answers" id="answers"></div>
+    <button class="next-btn" id="next">שאלה הבאה</button>
+  </div>
+
+  <script>
+    let questions = [
+      {
+        "id": "1759",
+        "question": "האם אוטובוס הנוסע בנתיב שיועד לתחבורה ציבורית רשאי לעקוף רכב עוקף?",
+        "category": "חוקי התנועה",
+        "answers": [
+          "רשאי, רק כאשר הרכב העוקף הוא רכב משא.",
+          "רשאי, רק בדרך שאינה עירונית.",
+          "רשאי.",
+          "רשאי, אם באוטובוס אין נוסעים."
+        ],
+        "correct": 2,
+        "pubDate": "09-11-2011 10:44:17"
+      },
+      {
+        "id": "1073",
+        "question": "מה פירוש התמרור?",
+        "category": "תמרורים",
+        "answers": [
+          "המרחק עד הכביש הקרוב (בק\"מ).",
+          "מספרה של דרך ראשית.",
+          "מספרה של דרך מהירה.",
+          "המרחק עד לצומת הקרוב (בק\"מ)."
+        ],
+        "correct": 1,
+        "image": "https://www.gov.il/BlobFolder/generalpage/tq_pic_01/he/TQ_PIC_31073.jpg",
+        "pubDate": "09-11-2011 10:44:18"
+      }
+    ];
+
+    let filteredQuestions = questions;
+    let current = null;
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function populateCategories() {
+      const categories = [...new Set(questions.map(q => q.category))].sort();
+      const select = document.getElementById('categoryFilter');
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+      });
+    }
+
+    function filterByCategory() {
+      const selected = document.getElementById('categoryFilter').value;
+      filteredQuestions = selected === 'all' ? questions : questions.filter(q => q.category === selected);
+      showRandomQuestion();
+    }
+
+    function showRandomQuestion() {
+      if (filteredQuestions.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
+      current = filteredQuestions[randomIndex];
+
+      const questionDiv = document.getElementById('question');
+      questionDiv.innerHTML = '';
+
+      const textNode = document.createElement('div');
+      textNode.textContent = current.question;
+      questionDiv.appendChild(textNode);
+
+      if (current.image) {
+        const img = document.createElement('img');
+        img.src = current.image;
+        img.alt = 'שאלה עם תמונה';
+        questionDiv.appendChild(img);
+      }
+
+      if (current.pubDate) {
+        const date = document.createElement('div');
+        date.className = 'pubdate';
+        date.textContent = `תאריך פרסום: ${current.pubDate}`;
+        questionDiv.appendChild(date);
+      }
+
+      const answersDiv = document.getElementById('answers');
+      answersDiv.innerHTML = '';
+
+      const answerObjects = current.answers.map((answer, index) => ({
+        text: answer,
+        isCorrect: index === current.correct
+      }));
+
+      shuffleArray(answerObjects).forEach(({ text, isCorrect }) => {
+        const btn = document.createElement('button');
+        btn.innerText = text;
+        btn.onclick = () => checkAnswer(btn, isCorrect);
+        answersDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(button, isCorrect) {
+      const all = document.querySelectorAll('.answers button');
+      all.forEach(btn => btn.disabled = true);
+      if (isCorrect) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        all.forEach(btn => {
+          if (btn.innerText === current.answers[current.correct]) {
+            btn.classList.add('correct');
+          }
+        });
+      }
+    }
+
+    document.getElementById('next').addEventListener('click', () => {
+      showRandomQuestion();
+    });
+
+    document.getElementById('categoryFilter').addEventListener('change', filterByCategory);
+
+    populateCategories();
+    filterByCategory();
+  </script>
+</body>
+</html>
