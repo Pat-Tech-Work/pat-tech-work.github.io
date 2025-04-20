@@ -170,6 +170,11 @@
       const answersDiv = document.getElementById('answers');
       answersDiv.innerHTML = '';
 
+      if (!current.answers || current.answers.length === 0) {
+        console.log('No answers available for this question');
+        return;
+      }
+
       const answerObjects = current.answers.map((answer, index) => ({
         text: answer,
         isCorrect: index === current.correct
