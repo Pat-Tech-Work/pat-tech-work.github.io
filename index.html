@@ -115,7 +115,7 @@
         filteredQuestions = questions;
         populateCategories();
         populateLicenseTypes();
-        filterByCategory();
+        filterQuestions();
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
@@ -157,16 +157,17 @@
       });
     }
 
-    function filterByCategory() {
-      const selected = document.getElementById('categoryFilter').value;
-      filteredQuestions = selected === 'all' ? questions : questions.filter(q => q.category === selected);
-      showRandomQuestion();
-    }
-
-    function filterByLicense() {
+    function filterQuestions() {
+      const selectedCategory = document.getElementById('categoryFilter').value;
       const selectedLicense = document.getElementById('licenseFilter').value;
-      filteredQuestions = selectedLicense === 'all' ? questions : questions.filter(q => q.license_types.includes(selectedLicense));
-      filterByCategory(); // Apply category filter as well
+
+      filteredQuestions = questions.filter(q => {
+        const categoryMatch = selectedCategory === 'all' || q.category === selectedCategory;
+        const licenseMatch = selectedLicense === 'all' || q.license_types.includes(selectedLicense);
+        return categoryMatch && licenseMatch;
+      });
+
+      showRandomQuestion();
     }
 
     function showRandomQuestion() {
@@ -249,8 +250,8 @@
       showRandomQuestion();
     });
 
-    document.getElementById('categoryFilter').addEventListener('change', filterByCategory);
-    document.getElementById('licenseFilter').addEventListener('change', filterByLicense);
+    document.getElementById('categoryFilter').addEventListener('change', filterQuestions);
+    document.getElementById('licenseFilter').addEventListener('change', filterQuestions);
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
