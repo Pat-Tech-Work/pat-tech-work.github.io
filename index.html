@@ -149,6 +149,16 @@
         return acc;
       }, {});
 
+      const licenseDescriptions = {
+        'B': 'רכב פרטי (B)',
+        'A': 'אופנוע (A)',
+        '1': 'טרקטור (1)',
+        'C1': 'רכב משא קל (C1)',
+        'C': 'רכב משא כבד (C)',
+        'D': 'רכב ציבורי (D)',
+        'A3': 'אופניים חשמליים (A3)'
+      };
+
       const licenses = Object.keys(licenseCounts).sort();
 
       const select = document.getElementById('licenseFilter');
@@ -156,7 +166,8 @@
       licenses.forEach(type => {
         const option = document.createElement('option');
         option.value = type;
-        option.textContent = `${type} (${licenseCounts[type]})`;
+        const description = licenseDescriptions[type] || type;
+        option.textContent = `${description} - (${licenseCounts[type]})`;
         select.appendChild(option);
       });
 
