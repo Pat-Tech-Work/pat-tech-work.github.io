@@ -116,13 +116,18 @@
     }
 
     function populateCategories() {
-      const categories = [...new Set(questions.map(q => q.category))].sort();
+      const categoryCounts = questions.reduce((acc, q) => {
+        acc[q.category] = (acc[q.category] || 0) + 1;
+        return acc;
+      }, {});
+
+      const categories = Object.keys(categoryCounts).sort();
       const select = document.getElementById('categoryFilter');
       select.innerHTML = '<option value="all">כל הנושאים</option>'; // Reset options
       categories.forEach(cat => {
         const option = document.createElement('option');
         option.value = cat;
-        option.textContent = cat;
+        option.textContent = `${cat} (${categoryCounts[cat]})`;
         select.appendChild(option);
       });
     }
