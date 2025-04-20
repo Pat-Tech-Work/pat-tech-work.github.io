@@ -122,8 +122,11 @@
     }
 
     function populateCategories() {
+      const selectedLicense = document.getElementById('licenseFilter').value;
       const categoryCounts = questions.reduce((acc, q) => {
-        acc[q.category] = (acc[q.category] || 0) + 1;
+        if (selectedLicense === 'all' || q.license_types.includes(selectedLicense)) {
+          acc[q.category] = (acc[q.category] || 0) + 1;
+        }
         return acc;
       }, {});
 
@@ -158,13 +161,13 @@
     }
 
     function filterQuestions() {
-      const selectedCategory = document.getElementById('categoryFilter').value;
       const selectedLicense = document.getElementById('licenseFilter').value;
+      const selectedCategory = document.getElementById('categoryFilter').value;
 
       filteredQuestions = questions.filter(q => {
-        const categoryMatch = selectedCategory === 'all' || q.category === selectedCategory;
         const licenseMatch = selectedLicense === 'all' || q.license_types.includes(selectedLicense);
-        return categoryMatch && licenseMatch;
+        const categoryMatch = selectedCategory === 'all' || q.category === selectedCategory;
+        return licenseMatch && categoryMatch;
       });
 
       showRandomQuestion();
@@ -260,6 +263,15 @@
       }
       return array;
     }
+
+    document.getElementById('licenseFilter').value = 'B'; // Set default license type to B
+    populateCategories(); // Update categories based on default license type
+
+    // Update categories when license type changes
+    document.getElementById('licenseFilter').addEventListener('change', () => {
+      populateCategories();
+      filterQuestions();
+    });
 
     populateLicenseTypes();
     loadQuestions();
