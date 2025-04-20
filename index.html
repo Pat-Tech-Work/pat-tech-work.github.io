@@ -203,6 +203,10 @@
         questionDiv.appendChild(date);
       }
 
+      const licenseNode = document.createElement('div');
+      licenseNode.textContent = `סוגי רישיון: ${current.license_types.join(', ')}`;
+      questionDiv.appendChild(licenseNode);
+
       const answersDiv = document.getElementById('answers');
       answersDiv.innerHTML = '';
 
