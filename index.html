@@ -149,18 +149,27 @@
         return acc;
       }, {});
 
-      const licenses = Object.keys(licenseCounts).sort();
+      const licenses = [
+        'מבחן רכב פרטי (B)',
+        'מבחן אופנוע (A)',
+        'מבחן טרקטור (1)',
+        'מבחן רכב משא קל (C1)',
+        'מבחן רכב משא כבד (C)',
+        'מבחן רכב ציבורי (D)',
+        'מבחן אופניים חשמליים (A3)'
+      ];
+
       const select = document.getElementById('licenseFilter');
       select.innerHTML = '<option value="all">כל סוגי הרישיונות</option>';
       licenses.forEach(type => {
         const option = document.createElement('option');
         option.value = type;
-        option.textContent = `${type} (${licenseCounts[type]})`;
+        option.textContent = `${type} (${licenseCounts[type] || 0})`;
         select.appendChild(option);
       });
 
       // קביעת ברירת מחדל ל-B
-      select.value = 'B';
+      select.value = 'מבחן רכב פרטי (B)';
     }
 
     function filterQuestions() {
