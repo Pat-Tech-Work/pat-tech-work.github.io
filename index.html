@@ -80,6 +80,16 @@
       font-size: 1rem;
       border-radius: 0.5rem;
     }
+    .mistakes-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -97,7 +107,7 @@
     <div class="question" id="question">טוען שאלה...</div>
     <div class="answers" id="answers"></div>
     <button class="next-btn" id="next">שאלה הבאה</button>
-    <button class="next-btn" id="mistakes">טעויות</button>
+    <button class="mistakes-btn" id="mistakes">טעויות (0)</button>
   </div>
 
   <script>
@@ -270,6 +280,11 @@
       cardDiv.appendChild(newInfoDiv);
     }
 
+    function updateMistakesButton() {
+      const mistakesButton = document.getElementById('mistakes');
+      mistakesButton.textContent = `טעויות (${mistakes.length})`;
+    }
+
     function checkAnswer(button, isCorrect) {
       const all = document.querySelectorAll('.answers button');
       all.forEach(btn => btn.disabled = true);
@@ -287,6 +302,7 @@
           mistakes.push(current);
         }
       }
+      updateMistakesButton();
     }
 
     function showMistakes() {
