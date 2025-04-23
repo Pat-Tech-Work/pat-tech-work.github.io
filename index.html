@@ -114,7 +114,7 @@
     let questions = [];
     let filteredQuestions = [];
     let current = null;
-    let mistakes = [];
+    let mistakes = JSON.parse(localStorage.getItem('mistakes')) || [];
 
     async function loadQuestions() {
       try {
@@ -128,6 +128,7 @@
         populateLicenseTypes();
         populateCategories();
         filterQuestions();
+        updateMistakesButton();
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
@@ -302,6 +303,7 @@
           mistakes.push(current);
         }
       }
+      localStorage.setItem('mistakes', JSON.stringify(mistakes));
       updateMistakesButton();
     }
 
