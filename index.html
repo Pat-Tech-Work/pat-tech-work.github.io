@@ -108,6 +108,7 @@
     <div class="answers" id="answers"></div>
     <button class="next-btn" id="next">שאלה הבאה</button>
     <button class="mistakes-btn" id="mistakes">טעויות (0)</button>
+    <button class="next-btn" id="backToAll" style="display: none;">חזרה לכל השאלות</button>
   </div>
 
   <script>
@@ -314,6 +315,15 @@
       }
       filteredQuestions = mistakes;
       showRandomQuestion();
+      document.getElementById('next').style.display = 'none';
+      document.getElementById('backToAll').style.display = 'inline-block';
+    }
+
+    function backToAllQuestions() {
+      filteredQuestions = questions;
+      showRandomQuestion();
+      document.getElementById('next').style.display = 'inline-block';
+      document.getElementById('backToAll').style.display = 'none';
     }
 
     document.getElementById('next').addEventListener('click', () => {
@@ -322,6 +332,10 @@
 
     document.getElementById('mistakes').addEventListener('click', () => {
       showMistakes();
+    });
+
+    document.getElementById('backToAll').addEventListener('click', () => {
+      backToAllQuestions();
     });
 
     document.getElementById('categoryFilter').addEventListener('change', filterQuestions);
