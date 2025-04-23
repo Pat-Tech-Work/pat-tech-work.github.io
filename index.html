@@ -90,6 +90,9 @@
       border-radius: 0.5rem;
       cursor: pointer;
     }
+    .card.mistakes-mode {
+      background-color: #ffebee; /* רקע אדום בהיר */
+    }
   </style>
 </head>
 <body>
@@ -103,7 +106,7 @@
       <option value="all">כל הנושאים</option>
     </select>
   </div>
-  <div class="card">
+  <div class="card" id="card">
     <div class="question" id="question">טוען שאלה...</div>
     <div class="answers" id="answers"></div>
     <button class="next-btn" id="next">שאלה הבאה</button>
@@ -317,6 +320,7 @@
       showRandomQuestion();
       document.getElementById('next').style.display = 'none';
       document.getElementById('backToAll').style.display = 'inline-block';
+      document.getElementById('card').classList.add('mistakes-mode');
     }
 
     function backToAllQuestions() {
@@ -324,6 +328,7 @@
       showRandomQuestion();
       document.getElementById('next').style.display = 'inline-block';
       document.getElementById('backToAll').style.display = 'none';
+      document.getElementById('card').classList.remove('mistakes-mode');
     }
 
     document.getElementById('next').addEventListener('click', () => {
