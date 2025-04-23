@@ -97,12 +97,14 @@
     <div class="question" id="question">טוען שאלה...</div>
     <div class="answers" id="answers"></div>
     <button class="next-btn" id="next">שאלה הבאה</button>
+    <button class="next-btn" id="mistakes">טעויות</button>
   </div>
 
   <script>
     let questions = [];
     let filteredQuestions = [];
     let current = null;
+    let mistakes = [];
 
     async function loadQuestions() {
       try {
@@ -273,6 +275,7 @@
       all.forEach(btn => btn.disabled = true);
       if (isCorrect) {
         button.classList.add('correct');
+        mistakes = mistakes.filter(q => q.id !== current.id);
       } else {
         button.classList.add('wrong');
         all.forEach(btn => {
@@ -280,11 +283,27 @@
             btn.classList.add('correct');
           }
         });
+        if (!mistakes.some(q => q.id === current.id)) {
+          mistakes.push(current);
+        }
       }
     }
 
-    document.getElementById('next').addEventListener('click', () => {
+    function showMistakes() {
+      if (mistakes.length === 0) {
+        console.log('No mistakes available');
+        return;
+      }
+      filteredQuestions = mistakes;
       showRandomQuestion();
+    }
+
+    document.getElementById('next').addEventListener('click', () => {
+      filterQuestions();
+    });
+
+    document.getElementById('mistakes').addEventListener('click', () => {
+      showMistakes();
     });
 
     document.getElementById('categoryFilter').addEventListener('change', filterQuestions);
