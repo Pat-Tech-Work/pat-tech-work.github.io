@@ -336,7 +336,7 @@
       filteredQuestions = mistakes;
       questionIndex = 0;
       showNextMistake();
-      document.getElementById('next').style.display = 'none';
+      document.getElementById('next').style.display = 'inline-block';
       document.getElementById('backToAll').style.display = 'inline-block';
       document.getElementById('card').classList.add('mistakes-mode');
     }
@@ -437,7 +437,11 @@
     }
 
     document.getElementById('next').addEventListener('click', () => {
-      showRandomQuestion();
+      if (document.getElementById('card').classList.contains('mistakes-mode')) {
+        showNextMistake();
+      } else {
+        showRandomQuestion();
+      }
     });
 
     document.getElementById('mistakes').addEventListener('click', () => {
