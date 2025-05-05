@@ -222,6 +222,8 @@
       const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
       current = filteredQuestions[randomIndex];
 
+      questionIndex++;
+
       const questionDiv = document.getElementById('question');
       questionDiv.innerHTML = '';
 
@@ -290,7 +292,7 @@
       categoryNode.textContent = `נושא: ${current.category}`;
       newInfoDiv.appendChild(categoryNode);
 
-      questionIndex++;
+      // הוסף מידע על מיקום השאלה בתור השאלות
       const positionNode = document.createElement('div');
       positionNode.className = 'pubdate';
       positionNode.textContent = `תור השאלות: שאלה ${questionIndex} מתוך ${filteredQuestions.length}`;
