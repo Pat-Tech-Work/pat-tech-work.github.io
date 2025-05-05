@@ -126,6 +126,7 @@
     let filteredQuestions = [];
     let current = null;
     let mistakes = JSON.parse(localStorage.getItem('mistakes')) || [];
+    let questionIndex = 0;
 
     async function loadQuestions() {
       try {
@@ -287,6 +288,12 @@
       categoryNode.className = 'pubdate';
       categoryNode.textContent = `נושא: ${current.category}`;
       newInfoDiv.appendChild(categoryNode);
+
+      questionIndex++;
+      const positionNode = document.createElement('div');
+      positionNode.className = 'pubdate';
+      positionNode.textContent = `תור השאלות: שאלה ${questionIndex} מתוך ${filteredQuestions.length}`;
+      newInfoDiv.appendChild(positionNode);
 
       const cardDiv = document.querySelector('.card');
       cardDiv.appendChild(newInfoDiv);
