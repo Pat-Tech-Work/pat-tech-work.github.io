@@ -335,10 +335,97 @@
       }
       filteredQuestions = mistakes;
       questionIndex = 0;
-      showRandomQuestion();
+      showNextMistake();
       document.getElementById('next').style.display = 'none';
       document.getElementById('backToAll').style.display = 'inline-block';
       document.getElementById('card').classList.add('mistakes-mode');
+    }
+
+    function showNextMistake() {
+      if (questionIndex >= filteredQuestions.length) {
+        console.log('No more mistakes available');
+        return;
+      }
+      current = filteredQuestions[questionIndex];
+
+      const questionDiv = document.getElementById('question');
+      questionDiv.innerHTML = '';
+
+      const textNode = document.createElement('div');
+      textNode.style.direction = 'rtl';
+      textNode.textContent = current.question;
+      questionDiv.appendChild(textNode);
+
+      if (current.image) {
+        const img = document.createElement('img');
+        img.src = current.image;
+        img.alt = 'שאלה עם תמונה';
+        questionDiv.appendChild(img);
+      }
+
+      const answersDiv = document.getElementById('answers');
+      answersDiv.innerHTML = '';
+
+      if (!current.answers || current.answers.length === 0) {
+        console.log('No answers available for this question');
+        return;
+      }
+
+      const answerObjects = current.answers.map((answer, index) => ({
+        text: answer,
+        isCorrect: index === current.correct
+      }));
+
+      shuffleArray(answerObjects).forEach(({ text, isCorrect }) => {
+        const btn = document.createElement('button');
+        btn.innerText = text;
+        btn.onclick = () => checkAnswer(btn, isCorrect);
+        answersDiv.appendChild(btn);
+      });
+
+      // נקה את המידע הקודם
+      const infoDiv = document.getElementById('info');
+      if (infoDiv) {
+        infoDiv.remove();
+      }
+
+      // צור אלמנט חדש למידע
+      const newInfoDiv = document.createElement('div');
+      newInfoDiv.id = 'info';
+      newInfoDiv.style.marginTop = '1rem';
+
+      const idNode = document.createElement('div');
+      idNode.className = 'pubdate';
+      idNode.textContent = `שאלה מספר: ${current.id}`;
+      newInfoDiv.appendChild(idNode);
+
+      if (current.pubDate) {
+        const date = document.createElement('div');
+        date.className = 'pubdate';
+        date.textContent = `תאריך פרסום: ${current.pubDate}`;
+        newInfoDiv.appendChild(date);
+      }
+
+      const licenseNode = document.createElement('div');
+      licenseNode.className = 'pubdate';
+      licenseNode.textContent = `סוגי רישיון: ${current.license_types.join(', ')}`;
+      newInfoDiv.appendChild(licenseNode);
+
+      const categoryNode = document.createElement('div');
+      categoryNode.className = 'pubdate';
+      categoryNode.textContent = `נושא: ${current.category}`;
+      newInfoDiv.appendChild(categoryNode);
+
+      // הוסף מידע על מיקום השאלה בתור השאלות
+      const positionNode = document.createElement('div');
+      positionNode.className = 'pubdate';
+      positionNode.textContent = `תור השאלות: שאלה ${questionIndex + 1} מתוך ${filteredQuestions.length}`;
+      newInfoDiv.appendChild(positionNode);
+
+      const cardDiv = document.querySelector('.card');
+      cardDiv.appendChild(newInfoDiv);
+
+      questionIndex++;
     }
 
     function backToAllQuestions() {
