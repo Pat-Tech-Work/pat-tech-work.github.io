@@ -119,6 +119,7 @@
     <button class="next-btn" id="next">שאלה הבאה</button>
     <button class="mistakes-btn" id="mistakes">טעויות (0)</button>
     <button class="next-btn" id="backToAll" style="display: none;">חזרה לכל השאלות</button>
+    <button class="next-btn" id="restart" style="display: none;">התחל שאלות מחדש</button>
   </div>
 
   <script>
@@ -217,6 +218,11 @@
     function showRandomQuestion() {
       if (filteredQuestions.length === 0) {
         console.log('No questions available');
+        return;
+      }
+      if (questionIndex >= filteredQuestions.length) {
+        document.getElementById('next').style.display = 'none';
+        document.getElementById('restart').style.display = 'inline-block';
         return;
       }
       const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
@@ -456,6 +462,13 @@
     document.getElementById('licenseFilter').addEventListener('change', () => {
       populateCategories();
       filterQuestions();
+    });
+
+    document.getElementById('restart').addEventListener('click', () => {
+      questionIndex = 0;
+      document.getElementById('next').style.display = 'inline-block';
+      document.getElementById('restart').style.display = 'none';
+      showRandomQuestion();
     });
 
     function shuffleArray(array) {
