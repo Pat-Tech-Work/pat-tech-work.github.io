@@ -487,8 +487,12 @@
     });
 
     function startPractice(start, end) {
-      if (filteredQuestions.length === 0) {
+      if (questions.length === 0) {
         console.log('No questions available');
+        return;
+      }
+      if (start > end || start <= 0 || end > questions.length) {
+        alert('אנא הזן טווח שאלות חוקי');
         return;
       }
       questionIndex = 0;
