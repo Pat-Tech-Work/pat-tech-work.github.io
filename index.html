@@ -479,7 +479,7 @@
     document.getElementById('startPractice').addEventListener('click', () => {
       const start = parseInt(document.getElementById('startQuestion').value, 10);
       const end = parseInt(document.getElementById('endQuestion').value, 10);
-      if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start > end || end > filteredQuestions.length) {
+      if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start > end || end > questions.length) {
         alert('אנא הזן טווח שאלות חוקי');
         return;
       }
