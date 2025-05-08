@@ -113,6 +113,10 @@
       <option value="all">כל הנושאים</option>
     </select>
   </div>
+  <div class="filter">
+    <input type="number" id="questionCount" placeholder="מספר שאלות לתרגול" min="1" max="305" style="width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+    <button class="next-btn" id="startPractice">התחל תרגול</button>
+  </div>
   <div class="card" id="card">
     <div class="question" id="question">טוען שאלה...</div>
     <div class="answers" id="answers"></div>
@@ -470,6 +474,25 @@
       document.getElementById('restart').style.display = 'none';
       showRandomQuestion();
     });
+
+    document.getElementById('startPractice').addEventListener('click', () => {
+      const count = parseInt(document.getElementById('questionCount').value, 10);
+      if (isNaN(count) || count <= 0) {
+        alert('אנא הזן מספר שאלות חוקי');
+        return;
+      }
+      startPractice(count);
+    });
+
+    function startPractice(count) {
+      if (filteredQuestions.length === 0) {
+        console.log('No questions available');
+        return;
+      }
+      questionIndex = 0;
+      filteredQuestions = filteredQuestions.slice(0, count);
+      showRandomQuestion();
+    }
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
