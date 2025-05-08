@@ -487,16 +487,16 @@
     });
 
     function startPractice(start, end) {
-      if (questions.length === 0) {
+      if (filteredQuestions.length === 0) {
         console.log('No questions available');
         return;
       }
-      if (start > end || start <= 0 || end > questions.length) {
+      if (start > end || start <= 0 || end > filteredQuestions.length) {
         alert('אנא הזן טווח שאלות חוקי');
         return;
       }
       questionIndex = 0;
-      filteredQuestions = questions.slice(start - 1, end);
+      filteredQuestions = filteredQuestions.slice(start - 1, end);
       showRandomQuestion();
     }
 
