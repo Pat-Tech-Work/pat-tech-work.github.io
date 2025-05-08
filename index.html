@@ -114,7 +114,8 @@
     </select>
   </div>
   <div class="filter">
-    <input type="number" id="questionCount" placeholder="מספר שאלות לתרגול" min="1" max="305" style="width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+    <input type="number" id="startQuestion" placeholder="שאלה התחלתית" min="1" max="305" style="width: 48%; padding: 0.5rem; font-size: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+    <input type="number" id="endQuestion" placeholder="שאלה סופית" min="1" max="305" style="width: 48%; padding: 0.5rem; font-size: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; float: right;">
     <button class="next-btn" id="startPractice">התחל תרגול</button>
   </div>
   <div class="card" id="card">
@@ -476,21 +477,22 @@
     });
 
     document.getElementById('startPractice').addEventListener('click', () => {
-      const count = parseInt(document.getElementById('questionCount').value, 10);
-      if (isNaN(count) || count <= 0) {
-        alert('אנא הזן מספר שאלות חוקי');
+      const start = parseInt(document.getElementById('startQuestion').value, 10);
+      const end = parseInt(document.getElementById('endQuestion').value, 10);
+      if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start > end || end > filteredQuestions.length) {
+        alert('אנא הזן טווח שאלות חוקי');
         return;
       }
-      startPractice(count);
+      startPractice(start, end);
     });
 
-    function startPractice(count) {
+    function startPractice(start, end) {
       if (filteredQuestions.length === 0) {
         console.log('No questions available');
         return;
       }
       questionIndex = 0;
-      filteredQuestions = filteredQuestions.slice(0, count);
+      filteredQuestions = filteredQuestions.slice(start - 1, end);
       showRandomQuestion();
     }
 
